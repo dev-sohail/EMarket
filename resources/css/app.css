@@ -1,0 +1,183 @@
+@import 'tailwindcss';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@plugin '@tailwindcss/typography';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/*
+ * Project design tokens.
+ * Grid-driven, disciplined, functional — a nod to the Project
+ * Style: precise type, a single red signal color, hairline rules, minimal
+ * radius. Space Grotesk carries headings and price numerals; Instrument
+ * Sans carries body copy.
+ */
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Space Grotesk', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+
+    --color-ink: #14171a;
+    --color-ink-soft: #40454b;
+    --color-paper: #faf9f6;
+    --color-paper-dim: #f0efe9;
+    --color-line: #dedcd4;
+    --color-steel: #6b6f76;
+    --color-red: #d6001c;
+    --color-red-dark: #a80016;
+    --color-sale: #1b7a43;
+    --color-blue: #1e40af;
+    --color-blue-light: #3b82f6;
+    --color-purple: #7c3aed;
+    --color-purple-light: #a855f7;
+    --color-amber: #b45309;
+    --color-amber-light: #f59e0b;
+    --color-gray: #52525b;
+    --color-gray-light: #71717a;
+}
+
+@layer base {
+    body {
+        background-color: var(--color-paper);
+        color: var(--color-ink);
+    }
+
+    .font-display {
+        font-family: var(--font-display);
+    }
+}
+
+@layer components {
+    /* Tabular numerals for prices so figures align in grids/tables */
+    .price {
+        font-family: var(--font-display);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.01em;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 0.125rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        letter-spacing: 0.01em;
+        transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+    }
+
+    .btn-primary {
+        background-color: var(--color-red);
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: var(--color-red-dark);
+    }
+
+    .btn-dark {
+        background-color: var(--color-ink);
+        color: white;
+    }
+    .btn-dark:hover {
+        background-color: var(--color-ink-soft);
+    }
+
+    .btn-outline {
+        background-color: transparent;
+        border: 1px solid currentColor;
+    }
+
+    .hairline {
+        border-color: var(--color-line);
+    }
+
+    .eyebrow {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.75rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-red);
+    }
+
+    .nav-link {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--color-steel);
+        text-decoration: none;
+        transition: background-color 0.15s, color 0.15s;
+    }
+
+    .nav-link:hover {
+        background-color: var(--color-paper-dim);
+        color: var(--color-ink);
+    }
+
+    .nav-link.active {
+        background-color: var(--color-red);
+        color: #fff;
+    }
+
+    /* ---- Popup management ---- */
+
+    .popup-card {
+        transition: box-shadow 150ms ease, transform 150ms ease, opacity 150ms ease;
+    }
+    .popup-card.dragging {
+        opacity: 0.4;
+        transform: rotate(1.5deg) scale(0.99);
+    }
+    .popup-card.drag-over {
+        box-shadow: 0 0 0 2px var(--color-red);
+    }
+    .popup-card.drag-handle {
+        cursor: grab;
+    }
+    .popup-card.dragging .popup-card.drag-handle {
+        cursor: grabbing;
+    }
+
+    .popup-type-card {
+        transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+        cursor: pointer;
+    }
+    .popup-type-card:hover {
+        background-color: var(--color-paper-dim);
+    }
+    .popup-type-card.is-selected {
+        border-color: var(--color-red);
+        background-color: rgba(214, 0, 28, 0.04);
+        box-shadow: 0 0 0 1px var(--color-red);
+    }
+
+    .popup-preview-empty {
+        background-image:
+            linear-gradient(45deg, var(--color-line) 25%, transparent 25%),
+            linear-gradient(-45deg, var(--color-line) 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, var(--color-line) 75%),
+            linear-gradient(-45deg, transparent 75%, var(--color-line) 75%);
+        background-size: 16px 16px;
+        background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    }
+
+    .popup-preview-overlay {
+        transition: background-color 200ms ease;
+    }
+    .popup-preview-panel {
+        transition: background-color 200ms ease;
+    }
+
+    @keyframes popup-slide-in {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .popup-slide-in {
+        animation: popup-slide-in 250ms ease both;
+    }
+}

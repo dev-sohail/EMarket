@@ -1,0 +1,28 @@
+# Never execute anything served out of the user-upload disk.
+#
+# storage/app/public is symlinked into the document root as /storage, so every
+# byte written there by an upload is reachable over HTTP. Today all 13 upload
+# sites call ->store(), which derives the filename from a random hash plus a
+# server-detected extension, so nothing executable can land here. This file
+# removes that single point of failure: if a future change uses storeAs() with a
+# client-supplied name, or Storage::put(), or a stray manual copy, the result is
+# still served as bytes rather than run as code.
+#
+# RemoveHandler/RemoveType are used rather than `php_flag engine off` because
+# php_flag is a no-op without mod_php, and this host runs PHP via
+# proxy_fcgi. The vhost has AllowOverride All, so this is honoured.
+<IfModule mod_mime.c>
+    RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .cgi .pl .py .jsp .asp .aspx .shtml
+    RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phps
+</IfModule>
+
+<FilesMatch "(?i)\.(php[0-9.]*|phtml|phar|cgi|pl|py|shtml|jsp|asp|aspx)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

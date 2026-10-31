@@ -1,0 +1,59 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Allow access only to public/ and specific static files
+    RewriteCond %{REQUEST_FILENAME} !^/(public/|css/|js/|images/|fonts/|vendor/|build/|robots.txt|sitemap.xml|favicon.ico|.well-known/)$ [OR]
+    RewriteCond %{REQUEST_FILENAME} !^/(index.php|\.env|composer\.json|composer\.lock|package\.json|package\.lock|artisan|server\.php|gulpfile\.js|webpack\.mix\.js|phpunit\.xml|README\.md|CHANGELOG\.md|LICENSE\.md|poweredin_db|poweredin_db\.sql|\.phpunit\.result\.cache|.mcp\.json|opencode\.json|boost\.json)$
+    RewriteRule ^ - [F]
+
+    # Route all requests to the real entry point in public/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ /public/index.php [L]
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Images
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # CSS and JS
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+
+    # Fonts
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+
+    # Others
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|webp|svg|woff|woff2|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    <FilesMatch "\.(html|php)$">
+        Header set Cache-Control "private, max-age=0, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+</IfModule>
