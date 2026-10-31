@@ -7,6 +7,24 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## About EMarket
+
+EMarket is a Laravel 13 e-commerce application with a storefront, admin back office, Stripe integration, and a dynamic API-management module.
+
+### Configuration via `.env`
+
+All environment-specific values and secrets are configured through `.env`, which is **gitignored and never committed**. Copy `.env.example` to `.env` and fill in your own values:
+
+- `APP_NAME`, `APP_URL`, `APP_KEY` — run `php artisan key:generate`
+- `DB_*` — your database connection
+- `MAIL_*` — mail driver and from address
+- `STRIPE_*` — Stripe keys (also configurable in Admin > Settings > Payment Methods)
+- `ADMIN_EMAIL` / `ADMIN_PASSWORD` — set during installation (not stored in `.env`)
+
+Store contact details (email, phone, address) are managed through **Admin > Settings** and persisted to the database, not hardcoded.
+
+Never commit `.env`, `.env.production`, or any file containing real credentials.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -51,7 +69,7 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within EMarket or Laravel, please send an e-mail via the project's contact channel. Do **not** disclose vulnerabilities or secrets in public issues or commits.
 
 ## License
 
